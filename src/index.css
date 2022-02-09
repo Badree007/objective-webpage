@@ -1,13 +1,142 @@
+:root {
+  --main-color: #273B7E;
+  --background-color: #FFFFFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--main-color);
+}
+
 body {
+  height: max(100%, 100vh);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #E5E5E5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.App {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.main-header {
+  width: 100%;
+  text-align: center;
+  background: var(--background-color);
+  padding: 10px 0;
+
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+  box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+}
+
+.main-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.sidebar {
+  width: auto;
+  height: 100%;
+  background: var(--background-color);
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+  box-shadow: 0px 1px 5px 0px rgba(49, 48, 48, 0.281);
+}
+
+.sidebar > .side-content {
+  /* padding: 5px 10px; */
+}
+
+.side-content > ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.side-content > ul > li{
+  width: 100%;
+  list-style: none;
+  padding: 30px 10px;
+  font-size: 12px;
+  color: black;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.side-content a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5em;
+  color: black;
+  text-decoration: none;
+}
+
+.main-body {
+  width: 100%;
+  height: 100%;
+  padding: .7rem 2rem;
+}
+
+.main-body > p {
+  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid #afacac;
+}
+
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  margin-top: 1em;
+  padding: .8em;
+  border-radius: 0 5px 5px;
+}
+
+.objective-box {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  border: 1px solid #afacac;
+  border-radius: 5px;
+
+  display: grid;
+  grid-column-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.objective-box > * {
+  padding-bottom: 1em;
+}
+
+.objective-box input {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.date-field {
+  display: grid;
+  grid-column-gap: 1em;
+  grid-template-columns: 1fr 1fr;
 }
