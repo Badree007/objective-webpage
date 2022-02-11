@@ -62,16 +62,6 @@ code {
   cursor: pointer;
 }
 
-@media only screen and (max-width:600px){
-  .nav-bar {
-    display: block;
-  }
-
-  .sidebar {
-    display: none;
-  }
-}
-
 .nav-bar-show {
   display: block;
 }
@@ -168,6 +158,10 @@ code {
   background-color: var(--background-color);
   padding: .8em;
   border-radius: 0 5px 5px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .objective-box {
@@ -197,7 +191,7 @@ code {
 
 .date-field {
   display: grid;
-  grid-column-gap: 1em;
+  grid-gap: 1em;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -211,6 +205,7 @@ code {
   font-size: .8rem;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .addObjective-btn-field {
@@ -244,4 +239,34 @@ code {
 .btn:active,
 .btn:hover {
   opacity: .9;
+}
+
+
+@media only screen and (max-width:600px){
+  .nav-bar {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar-show {
+    display: block;
+    position: absolute;
+  }
+
+  .main-body {
+    padding: .5rem 1rem;
+  }
+
+  .objective-content {
+    /* grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .date-field {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
 }
