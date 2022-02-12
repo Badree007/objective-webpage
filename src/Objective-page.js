@@ -24,6 +24,7 @@ function ObjectiveBox({ obj, windowWidth}) {
     const [endDate, setEndDate] = useState(obj.endDate);
     const [keyMeasures, setKeyMeasures] = useState(obj.keyMeasures);
     const [updateMessageShow, setUpdateMessageShow] = useState(false);
+    const [keyMsgShow, setKeyMsgShow] = useState(false);
   
     // This method updates data and stores them to the local storage
     // It is called when update button is clicked
@@ -41,14 +42,21 @@ function ObjectiveBox({ obj, windowWidth}) {
       setUpdateMessageShow(true);
       setTimeout(()=> {
         setUpdateMessageShow(false);
-      }, 2000)
+      }, 2000);
     }
   
     // This method adds empty string to keyMeasures array which helps to render empty key measure field
+    // Before adding checks if any fields are empty
     // It restrics to add more than 3 items
     const addkeyMeasureField = ()=> {
-      if(keyMeasures.length < 3)
-        setKeyMeasures([...keyMeasures, '']);
+        if (keyMeasures[keyMeasures.length -1] === '') {
+            setKeyMsgShow(true);
+            setTimeout(()=> {
+                setKeyMsgShow(false);
+            }, 2000);
+        }
+        if(keyMeasures.length < 3 && keyMeasures[keyMeasures.length -1] !== '')
+            setKeyMeasures([...keyMeasures, '']);
     }
   
     // This method returns today's date that can be used to Start Date min value
@@ -60,51 +68,55 @@ function ObjectiveBox({ obj, windowWidth}) {
 
     // This is class for update message div which is shown when data are updated
     const updateMessageClass = 'update-message ' + (updateMessageShow ? 'update-message-show' : '');
+    const keyEmptyMessage = 'emptyField-message ' + (keyMsgShow ? 'emptyField-message-show' : '');
 
     return (
-      <form className='form objective-box' onSubmit={updateData}>
-        <div className={updateMessageClass} >
-          <p>Data Updated!</p>
-        </div>
-  
-        <div className='objective-content'>
-          <div className='objective'>
-            <h4>Objective {obj?.id +1 || 1}</h4>
-            <input type='text' name='objective' value={objective} onChange={(e)=>setObjective(e.target.value)} required />
-          </div>
-  
-          <div className='date-field'>
-            <div className='start-date-field'>
-              <h4>Start Date</h4>
-              <input type='date' name='start-date' min={today()} value={startDate} onChange={(e)=>setStartDate(e.target.value)} required />
+        <form className='form objective-box' onSubmit={updateData}>
+            <div className={updateMessageClass} >
+            <p>Data Updated!</p>
             </div>
-            <div className='end-date-field'>
-              <h4>End Date</h4>
-              <input type='date' name='end-date' min={startDate} value={endDate} onChange={(e)=>setEndDate(e.target.value)} required />
+  
+            <div className='objective-content'>
+                <div className='objective'>
+                    <h4>Objective {obj?.id +1 || 1}</h4>
+                    <input type='text' name='objective' value={objective} onChange={(e)=>setObjective(e.target.value)} required />
+                </div>
+        
+                <div className='date-field'>
+                    <div className='start-date-field'>
+                    <h4>Start Date</h4>
+                    <input type='date' name='start-date' min={today()} value={startDate} onChange={(e)=>setStartDate(e.target.value)} required />
+                    </div>
+                    <div className='end-date-field'>
+                    <h4>End Date</h4>
+                    <input type='date' name='end-date' min={startDate} value={endDate} onChange={(e)=>setEndDate(e.target.value)} required />
+                    </div>
+                </div>
+        
+                <div className='keyMeasure-field'>
+                    <div className={keyEmptyMessage}>
+                        <p>Fill the empty field!</p>
+                    </div>
+                    <div className='keyMeasure-head'>
+                    <h4>Key Measures</h4>
+                    <div className='addKey-btn' onClick={addkeyMeasureField}>
+                        <p>{windowWidth>400 ? `Add additional key measure` : `Add key`}</p>
+                        <IoMdAddCircle size={`1.4em`}/>
+                    </div>
+                    </div>
+                    {
+                    keyMeasures.map((measure, i) =>
+                    <KeyMeasure key={i} value={measure} index={i} setMeasure={keyMeasures}/>
+                    )
+                    }
+                </div>
             </div>
-          </div>
-  
-          <div className='keyMeasure-field'>
-            <div className='keyMeasure-head'>
-              <h4>Key Measures</h4>
-              <div className='addKey-btn' onClick={addkeyMeasureField}>
-                <p>{windowWidth>400 ? `Add additional key measure` : `Add key`}</p>
-                <IoMdAddCircle size={`1.4em`}/>
-              </div>
+    
+            <div className='update-btn-field'>
+                <button type='submit' className='btn update-btn'>Update</button>
             </div>
-            {
-              keyMeasures.map((measure, i) =>
-               <KeyMeasure key={i} value={measure} index={i} setMeasure={keyMeasures}/>
-              )
-            }
-          </div>
-        </div>
   
-        <div className='update-btn-field'>
-          <button type='submit' className='btn update-btn'>Update</button>
-        </div>
-  
-      </form>
+        </form>
     )
 }
 

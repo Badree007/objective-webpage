@@ -217,6 +217,25 @@ code {
   grid-template-columns: 1fr 1fr;
 }
 
+.keyMeasure-field {
+  position: relative;
+}
+
+.emptyField-message {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 40%;
+  font-size: .7rem;
+  padding: 10px;
+  background-color: rgb(222, 224, 64);
+  border-radius: 5px;
+}
+
+.emptyField-message-show {
+  display: block;
+}
+
 .keyMeasure-head {
   display: flex;
   justify-content: space-between;
