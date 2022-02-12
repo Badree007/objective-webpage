@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { FaBars } from 'react-icons/fa';
 import { AiOutlineSetting } from 'react-icons/ai';
@@ -36,26 +35,26 @@ function SideBar({ show }) {
     <aside className={sidebarClass} >
       <div className="side-content">
         <ul>
-          <li className='active-page-link'><a href={"#"}>
+          <li className='active-page-link'><div className='nav-content'>
            <VscGraphLine size={`2em`}/> 
            <p>Reports</p>
-          </a></li>
-          <li><a href={"#"}>
+          </div></li>
+          <li><div className='nav-content'>
            <FaWrench size={`2em`} style={{fill: 'white', strokeWidth: '2rem'}}/> 
            <p>Strategy</p>
-          </a></li>
-          <li><a href={"#"}>
+          </div></li>
+          <li><div className='nav-content'>
            <RiStethoscopeLine size={`2em`}/> 
            <p>Assessments</p>
-          </a></li>
-          <li><a href={"#"}>
+          </div></li>
+          <li><div className='nav-content'>
            <GrCatalogOption size={`2em`}/> 
            <p>Catalogue</p>
-          </a></li>
-          <li><a href={"#"}>
+          </div></li>
+          <li><div className='nav-content'>
            <AiOutlineSetting size={`2em`}/> 
            <p>Settings</p>
-          </a></li>
+          </div></li>
         </ul>
       </div>
     </aside>
@@ -67,25 +66,19 @@ function KeyMeasure({value, index, setMeasure}){
 
   useEffect(()=>{
     setMeasure[index] = keyMeasure;
-  },[keyMeasure]);
+  },[setMeasure, index, keyMeasure]);
 
   return (
-    <input type='text' name='key-measure' value={keyMeasure} onChange={(e)=>setKeyMeasure(e.target.value)}/>
+    <input type='text' name='key-measure' value={keyMeasure} onChange={(e)=>setKeyMeasure(e.target.value)} required />
   )
 }
 
 function ObjectiveBox({ obj, windowWidth}) {
-  const [objective, setObjective] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [keyMeasures, setKeyMeasures] = useState([]);
-
-  useEffect(()=> {
-    setObjective(obj.objective);
-    setStartDate(obj.startDate);
-    setEndDate(obj.endDate);
-    setKeyMeasures(obj.keyMeasures);
-  }, [])
+  const [objective, setObjective] = useState(obj.objective);
+  const [startDate, setStartDate] = useState(obj.startDate);
+  const [endDate, setEndDate] = useState(obj.endDate);
+  const [keyMeasures, setKeyMeasures] = useState(obj.keyMeasures);
+  const [updateMessageShow, setUpdateMessageShow] = useState(false);
 
   const updateData = (e) => {
     e.preventDefault();
@@ -97,6 +90,11 @@ function ObjectiveBox({ obj, windowWidth}) {
       endDate,
       keyMeasures
     }))
+
+    setUpdateMessageShow(true);
+    setTimeout(()=> {
+      setUpdateMessageShow(false);
+    }, 2000)
   }
 
   const addkeyMeasureField = ()=> {
@@ -104,24 +102,32 @@ function ObjectiveBox({ obj, windowWidth}) {
       setKeyMeasures([...keyMeasures, '']);
   }
 
+  const date = new Date();
+  const month = date.getMonth()<9 ? `0`+(date.getMonth() +1) : (date.getMonth() +1);
+  const today = `${date.getFullYear()}-${month}-${date.getDate()}`;
+  
+  const updateMessageClass = 'update-message ' + (updateMessageShow ? 'update-message-show' : '');
   
   return (
     <form className='form objective-box' onSubmit={updateData}>
+      <div className={updateMessageClass} >
+        <p>Data Updated!</p>
+      </div>
 
       <div className='objective-content'>
         <div className='objective'>
           <h4>Objective {obj?.id +1 || 1}</h4>
-          <input type='text' name='objective' value={objective} onChange={(e)=>setObjective(e.target.value)} />
+          <input type='text' name='objective' value={objective} onChange={(e)=>setObjective(e.target.value)} required />
         </div>
 
         <div className='date-field'>
           <div className='start-date-field'>
             <h4>Start Date</h4>
-            <input type='date' name='start-date' value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
+            <input type='date' name='start-date' min={today} value={startDate} onChange={(e)=>setStartDate(e.target.value)} required />
           </div>
           <div className='end-date-field'>
             <h4>End Date</h4>
-            <input type='date' name='end-date' value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
+            <input type='date' name='end-date' min={startDate} value={endDate} onChange={(e)=>setEndDate(e.target.value)} required />
           </div>
         </div>
 
@@ -205,17 +211,17 @@ function MainBody({ windowWidth }) {
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [sidebarShow, setSidebarShow] = useState(true);
+  const [sidebarShow, setSidebarShow] = useState(false, ()=>!sidebarShow);
 
-  window.addEventListener('resize', ()=>
-    setWindowWidth(window.innerWidth)
-  )
+  window.addEventListener('resize', ()=> {
+    setWindowWidth(window.innerWidth);
+  })
 
-  useEffect (() => {
+  useEffect (()=> {
     if (windowWidth < 600) 
-      setSidebarShow(!sidebarShow);
-  }, [])
-
+      setSidebarShow();
+  }, [windowWidth])
+  
   return (
     <div className="App">
       <Header show={sidebarShow} setShow={setSidebarShow} />
